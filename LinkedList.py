@@ -13,23 +13,65 @@ class LinkedList:
         self.tail = None
         self.size = 0
 
-    @staticmethod
-    def defaultComparator(element1, element2):
-        if element1.data >= element2.data:
-            return 1
-        elif element1.data < element2.data:
-            return -1
+    def __str__(self):
+        result = []
+        current = self.head
+        while current is not None:
+            result.append(str(current.data))
+            current = current.nextE
+        return "[" + ", ".join(result) + "]"
 
-        return 0
+    def get(self, value):
+        current = self.head
+        while current is not None:
+            if current.data == value:
+                return current
+            current = current.nextE
+        return None
 
-    def add_node(self, value):
+    def delete(self, e):
         if self.head is None:
-            self.tail = self.head = Element(value)
+            return
+
+        if self.head.data == e:
+            self.head = self.head.nextE
+            self.size -= 1
+            return
+
+        current = self.head
+        while current.nextE is not None:
+            if current.nextE.data == e:
+                current.nextE = current.nextE.nextE
+                self.size -= 1
+                return
+            current = current.nextE
+
+    def add_node(self, value, func=None):
+        new_element = Element(value)
+
+        if self.head is None:
+            self.head = new_element
+            self.tail = new_element
+            self.size = 1
+            return
+
+        if func is None:
+            func = lambda a, b: a >= b
+
+        current = self.head
+        previous = None
+        while current is not None and func(current.data, value):
+            previous = current
+            current = current.nextE
+
+        if previous is None:
+            new_element.nextE = self.head
+            self.head = new_element
+        elif current is None:
+            self.tail.nextE = new_element
+            self.tail = new_element
         else:
-            self.tail.next = Element(value)
-            self.tail = self.tail.next
+            previous.nextE = new_element
+            new_element.nextE = current
 
         self.size += 1
-        return self.tail
-
-

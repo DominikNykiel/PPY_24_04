@@ -26,3 +26,5 @@ class Student:
         return "Email: " + self.email + "\nName: " + self.name + "\nSurname: " + self.surname + "\nAll grades: " + str(
             self.all_grade) + "\nStatus: " + str(self.status)
 
+
+
